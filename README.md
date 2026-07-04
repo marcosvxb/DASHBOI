@@ -1,27 +1,27 @@
-# Painel Boi Gordo FGA - Vercel
+# Painel Boi Gordo FGA — Vercel
 
-App Next.js responsivo para acompanhar diariamente: exportações, demanda externa, escalas de abate, custo de alimentação, consumo interno, câmbio e clima.
+App Next.js pronto para deploy na Vercel.
 
-## Rodar localmente
-```bash
-npm install
-npm run dev
-```
+## Como publicar
 
-## Publicar na Vercel
-1. Crie uma conta em vercel.com.
-2. Suba esta pasta para um repositório GitHub.
-3. Na Vercel: Add New Project > importe o repositório > Deploy.
-4. Abra o link pelo celular e adicione à tela inicial.
+1. Envie esta pasta para um repositório GitHub.
+2. Acesse Vercel > Add New Project.
+3. Importe o repositório.
+4. Framework: Next.js.
+5. Build command: `npm run build`.
+6. Output: padrão da Vercel.
 
-## Onde atualizar dados
+## Onde editar dados
+
 Edite `lib/data.ts`.
 
-## Fontes recomendadas
-- Comex Stat/MDIC: exportações por NCM e destino.
-- ABIEC: análise setorial das exportações.
-- Banco Central do Brasil: dólar/PTAX/SGS.
-- Conab: safra, milho, soja e informações agropecuárias.
-- Cepea/Esalq: preços agropecuários.
-- INMET: clima, chuva, temperatura e alertas.
-- IBGE: abate e consumo aparente.
+## Fontes recomendadas para automação
+
+- Banco Central do Brasil: câmbio/PTAX.
+- Comex Stat/MDIC: exportações.
+- ABIEC: relatórios setoriais.
+- CEPEA/Esalq ou Scot: arroba, milho e soja.
+- CONAB: safra e custos.
+- IBGE: abate e consumo interno.
+- INMET: clima.
+- B3/CME/USDA: futuros e mercado internacional.

@@ -1,37 +1,53 @@
-export const kpis = [
-  { name: 'Exportações BR carne bovina', value: 'Atualizar mensal', trend: '+/-', note: 'Comex Stat / MDIC' },
-  { name: 'China e Hong Kong', value: 'Share destino', trend: 'monitorar', note: 'Comex Stat / ABIEC' },
-  { name: 'Escala de abate', value: 'Manual/API', trend: 'dias', note: 'Scot/Cepea/relatórios internos' },
-  { name: 'Milho MS', value: 'R$/sc', trend: 'custo', note: 'Conab/Cepea' },
-  { name: 'Dólar venda', value: 'BCB SGS 1', trend: 'diário', note: 'Banco Central' },
-  { name: 'Clima fazenda', value: 'INMET', trend: 'risco', note: 'chuva/temp/umidade' }
+export type MarketPoint = {
+  mes: string;
+  arroba: number;
+  dolar: number;
+  milho: number;
+  exportacao: number;
+  china: number;
+  escala: number;
+  chuva: number;
+};
+
+export const indicadores = {
+  atualizado: "04/07/2026 11:30",
+  arrobaMs: 309.5,
+  dolar: 5.45,
+  milho: 68.2,
+  fareloSoja: 1780,
+  exportMes: 256.4,
+  chinaShare: 49.2,
+  escalaMedia: 8.5,
+  consumoInterno: "Neutro",
+  clima: "Atenção",
+  pressao: 72
+};
+
+export const historico: MarketPoint[] = [
+  { mes: "Jan/25", arroba: 296, dolar: 5.12, milho: 61, exportacao: 198, china: 88, escala: 10, chuva: 180 },
+  { mes: "Fev/25", arroba: 301, dolar: 5.02, milho: 63, exportacao: 205, china: 94, escala: 9, chuva: 150 },
+  { mes: "Mar/25", arroba: 294, dolar: 5.08, milho: 65, exportacao: 216, china: 101, escala: 11, chuva: 120 },
+  { mes: "Abr/25", arroba: 287, dolar: 5.15, milho: 64, exportacao: 222, china: 107, escala: 12, chuva: 80 },
+  { mes: "Mai/25", arroba: 291, dolar: 5.20, milho: 62, exportacao: 231, china: 112, escala: 10, chuva: 55 },
+  { mes: "Jun/25", arroba: 304, dolar: 5.34, milho: 66, exportacao: 244, china: 124, escala: 8, chuva: 34 },
+  { mes: "Jul/25", arroba: 309, dolar: 5.45, milho: 68, exportacao: 256, china: 126, escala: 8.5, chuva: 28 }
 ];
-export const exportHistory = [
-  { mes: 'Jan', volume: 185, receita: 890 }, { mes: 'Fev', volume: 176, receita: 840 },
-  { mes: 'Mar', volume: 202, receita: 975 }, { mes: 'Abr', volume: 215, receita: 1030 },
-  { mes: 'Mai', volume: 228, receita: 1105 }, { mes: 'Jun', volume: 236, receita: 1160 }
+
+export const fontes = [
+  { nome: "Comex Stat / MDIC", uso: "Exportações brasileiras por NCM, destino, volume e valor." },
+  { nome: "ABIEC", uso: "Relatórios de exportação e leitura setorial da carne bovina." },
+  { nome: "Banco Central do Brasil", uso: "PTAX, séries temporais e câmbio oficial." },
+  { nome: "CEPEA/Esalq", uso: "Indicadores de boi gordo, milho, soja e insumos." },
+  { nome: "CONAB", uso: "Safras, estoques, milho, farelo e custos agropecuários." },
+  { nome: "IBGE", uso: "Abate, consumo aparente, IPCA alimentação e dados de mercado interno." },
+  { nome: "INMET", uso: "Chuva, temperatura e anomalias climáticas por estação." },
+  { nome: "USDA / CME / B3", uso: "Mercado internacional, futuros e referência de risco." }
 ];
-export const markets = [
-  { mercado:'China/HK', participacao: 48 }, { mercado:'EUA', participacao: 9 }, { mercado:'UE', participacao: 8 },
-  { mercado:'Chile', participacao: 6 }, { mercado:'Oriente Médio', participacao: 12 }, { mercado:'Outros', participacao: 17 }
-];
-export const slaughterScale = [
-  { frigorifico:'JBS CG', dias: 8 }, { frigorifico:'Marfrig', dias: 7 }, { frigorifico:'Frizelo', dias: 5 }, { frigorifico:'Buriti', dias: 4 }
-];
-export const feedCost = [
-  { mes:'Jan', milho: 58, soja: 122, dieta: 13.8 }, { mes:'Fev', milho: 61, soja: 119, dieta: 14.1 },
-  { mes:'Mar', milho: 64, soja: 125, dieta: 14.7 }, { mes:'Abr', milho: 62, soja: 128, dieta: 14.5 },
-  { mes:'Mai', milho: 59, soja: 130, dieta: 14.2 }, { mes:'Jun', milho: 57, soja: 127, dieta: 13.9 }
-];
-export const internalDemand = [
-  { mes:'Jan', consumo: 100 }, { mes:'Fev', consumo: 96 }, { mes:'Mar', consumo: 101 }, { mes:'Abr', consumo: 103 }, { mes:'Mai', consumo: 99 }, { mes:'Jun', consumo: 104 }
-];
-export const sources = [
-  { nome:'Comex Stat / MDIC', uso:'Exportações por NCM, país de destino, volume e valor.' },
-  { nome:'ABIEC', uso:'Leituras setoriais e consolidação do mercado externo de carne bovina.' },
-  { nome:'Banco Central do Brasil', uso:'Dólar comercial/PTAX e séries SGS.' },
-  { nome:'Conab', uso:'Safra, milho, soja e informações agropecuárias oficiais.' },
-  { nome:'Cepea/Esalq', uso:'Indicadores agropecuários e preços de referência.' },
-  { nome:'INMET', uso:'Chuva, temperatura, umidade, alerta e histórico climático.' },
-  { nome:'IBGE', uso:'Abate, produção e consumo aparente em séries oficiais.' }
+
+export const leitura = [
+  "Exportações e compras da China acima da média elevam a pressão de alta.",
+  "Escalas abaixo de 9 dias indicam menor oferta imediata para os frigoríficos.",
+  "Milho e farelo firmes reduzem margem de confinamento e devem ser monitorados.",
+  "Câmbio valorizado aumenta competitividade da carne brasileira no exterior.",
+  "Clima seco pode reduzir ganho de peso a pasto e antecipar oferta regional."
 ];

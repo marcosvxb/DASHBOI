@@ -1,0 +1,9 @@
+{
+  "name": "Painel Boi Gordo FGA",
+  "short_name": "Boi FGA",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#07110c",
+  "theme_color": "#07110c",
+  "icons": []
+}
