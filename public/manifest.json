@@ -1,9 +1,1 @@
-{
-  "name": "Painel Boi Gordo FGA",
-  "short_name": "Boi FGA",
-  "start_url": "/",
-  "display": "standalone",
-  "background_color": "#07110c",
-  "theme_color": "#07110c",
-  "icons": []
-}
+{"name":"DASHBOI","short_name":"DASHBOI","start_url":"/","display":"standalone","background_color":"#07110d","theme_color":"#07110d","icons":[]}
