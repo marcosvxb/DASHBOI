@@ -1,6 +1,6 @@
 {
   "name": "boi-dashboard-pro",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -8,20 +8,19 @@
     "start": "next start"
   },
   "dependencies": {
-    "@vercel/analytics": "latest",
-    "next": "latest",
-    "react": "latest",
-    "react-dom": "latest",
-    "recharts": "latest",
-    "lucide-react": "latest"
+    "next": "14.2.22",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "recharts": "2.15.0",
+    "lucide-react": "0.468.0"
   },
   "devDependencies": {
-    "typescript": "latest",
-    "@types/node": "latest",
-    "@types/react": "latest",
-    "@types/react-dom": "latest",
-    "tailwindcss": "latest",
-    "@tailwindcss/postcss": "latest",
-    "postcss": "latest"
+    "typescript": "5.7.2",
+    "@types/node": "22.10.2",
+    "@types/react": "18.3.17",
+    "@types/react-dom": "18.3.5",
+    "tailwindcss": "3.4.17",
+    "postcss": "8.4.49",
+    "autoprefixer": "10.4.20"
   }
 }

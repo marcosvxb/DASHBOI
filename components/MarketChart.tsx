@@ -1,6 +1,6 @@
 "use client";
 import { ResponsiveContainer, LineChart, Line, XAxis, YAxis, Tooltip, CartesianGrid, BarChart, Bar, Legend } from "recharts";
-import { historico } from "@/lib/data";
+import { historico } from "../lib/data";
 
 export function TrendChart({ tipo }: { tipo: "arroba" | "exportacao" | "custo" | "clima" }) {
   if (tipo === "exportacao") {

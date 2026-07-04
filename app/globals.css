@@ -1,4 +1,7 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root { color-scheme: dark; }
 body { margin:0; background:#07110c; color:#f2f5f1; font-family: Arial, Helvetica, sans-serif; }
 .card { background:rgba(255,255,255,.07); border:1px solid rgba(255,255,255,.12); border-radius:22px; box-shadow: 0 12px 30px rgba(0,0,0,.20); }

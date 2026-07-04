@@ -1,6 +1,6 @@
 import { Activity, Beef, CloudRain, DollarSign, Factory, Globe2, Ship, Wheat } from "lucide-react";
-import { TrendChart } from "@/components/MarketChart";
-import { fontes, indicadores, leitura } from "@/lib/data";
+import { TrendChart } from "../components/MarketChart";
+import { fontes, indicadores, leitura } from "../lib/data";
 
 function Card({ title, value, sub, icon: Icon, tone = "" }: any) {
   return <div className="card p-4"><div className="flex items-center justify-between"><div><p className="muted text-xs uppercase tracking-wider">{title}</p><p className={`text-2xl font-bold mt-1 ${tone}`}>{value}</p><p className="muted text-xs mt-1">{sub}</p></div><Icon className="opacity-70" size={26}/></div></div>
