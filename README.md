@@ -1,16 +1,16 @@
-# DASHBOI funcionando
+# DASHBOI - Vercel estático
 
-Projeto testado com `npm run build` antes de compactar.
+Versão sem Node, sem npm install, sem Next.js e sem build. É a forma mais segura para publicar na Vercel agora.
 
-## Publicar na Vercel
-1. Extraia o ZIP.
-2. Apague o conteúdo antigo do repositório, ou crie um repositório novo.
-3. Envie estes arquivos para o GitHub.
-4. Na Vercel, importe o repositório.
-5. Framework: Next.js. Build command: `npm run build`. Output: automático.
+## Como publicar
+1. Apague os arquivos antigos do repositório DASHBOI.
+2. Envie somente os arquivos desta pasta para a raiz do GitHub.
+3. Na Vercel, faça redeploy.
 
-## Atualizar dados manuais
-Edite `lib/data.ts`.
+Como não existe package.json, a Vercel publica como site estático e não roda npm install.
 
-## API pronta
-`/api/market` consulta a PTAX do Banco Central. Use essa rota como modelo para integrar Comex Stat, INMET, CONAB, CEPEA, etc.
+## Onde editar dados
+Abra `app.js` e edite o objeto `state`.
+
+## Automático
+O dólar tenta atualizar pela API pública PTAX do Banco Central.
