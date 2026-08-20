@@ -4,7 +4,7 @@ Painel web estático e responsivo de inteligência para pecuária de corte.
 
 ## Publicação
 
-O projeto não exige build. Na Vercel, use **Framework Preset: Other** e deixe o comando de build vazio. A raiz do repositório é a pasta pública.
+O projeto usa uma etapa mínima, sem dependências externas, para copiar os arquivos públicos para `dist`. A configuração da Vercel está versionada em `vercel.json`.
 
 ## Atualização dos dados
 
