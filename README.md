@@ -1,16 +1,18 @@
-# DASHBOI - Vercel estático
+# DASHBOI
 
-Versão sem Node, sem npm install, sem Next.js e sem build. É a forma mais segura para publicar na Vercel agora.
+Painel web estático e responsivo de inteligência para pecuária de corte.
 
-## Como publicar
-1. Apague os arquivos antigos do repositório DASHBOI.
-2. Envie somente os arquivos desta pasta para a raiz do GitHub.
-3. Na Vercel, faça redeploy.
+## Publicação
 
-Como não existe package.json, a Vercel publica como site estático e não roda npm install.
+O projeto não exige build. Na Vercel, use **Framework Preset: Other** e deixe o comando de build vazio. A raiz do repositório é a pasta pública.
 
-## Onde editar dados
-Abra `app.js` e edite o objeto `state`.
+## Atualização dos dados
 
-## Automático
-O dólar tenta atualizar pela API pública PTAX do Banco Central.
+As referências operacionais ficam no objeto `market`, em `app.js`. A cotação PTAX tenta atualização automática pela API oficial do Banco Central e usa uma referência manual identificada quando a API não responde.
+
+## Arquivos principais
+
+- `index.html`: estrutura do painel
+- `styles.css`: identidade visual e responsividade
+- `app.js`: dados, interações e gráficos
+- `manifest.json` e `sw.js`: instalação como aplicativo

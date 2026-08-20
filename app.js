@@ -1,61 +1,7 @@
-const state = {
-  score: 68,
-  drivers: [
-    "Exportações firmes sustentam viés positivo.",
-    "China segue como principal comprador monitorado.",
-    "Dólar valorizado melhora competitividade da carne exportada.",
-    "Custo do milho reduz margem do confinamento.",
-    "Clima deve ser acompanhado para oferta de pasto e logística."
-  ],
-  kpis: [
-    { label: "Arroba MS", value: "R$ 315,50", sub: "base editável / CEPEA ou Scot" },
-    { label: "Dólar comercial", value: "carregando", sub: "Banco Central" },
-    { label: "Milho MS", value: "R$ 54,00", sub: "CONAB / CEPEA" },
-    { label: "Farelo soja", value: "R$ 1.920", sub: "R$/t - referência" },
-    { label: "Exportações", value: "238 mil t", sub: "mês corrente - Comex Stat" },
-    { label: "China", value: "54%", sub: "participação estimada" },
-    { label: "Escalas", value: "6 dias", sub: "frigoríficos MS" },
-    { label: "Clima", value: "Favorável", sub: "INMET / NOAA" }
-  ],
-  series: {
-    arroba: { labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"], values:[292,298,304,308,311,318,315] },
-    exportacao: { labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"], values:[182,198,211,220,232,241,238] },
-    feed: { labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"], values:[49,51,52,53,55,56,54] },
-    weather: { labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"], values:[180,145,122,76,48,22,18] }
-  }
-};
-
-function brl(v){return new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(v)}
-function setText(id,text){document.getElementById(id).textContent=text}
-function render(){
-  setText('score-value', state.score); document.getElementById('score-bar').style.width=state.score+'%';
-  setText('market-label', state.score>=70?'Mercado altista':state.score>=45?'Mercado neutro':'Mercado baixista');
-  setText('score-text', 'Nota calculada por exportações, China, câmbio, escalas, custo alimentar, consumo interno e clima.');
-  setText('updated-at', 'Atualizado: '+new Date().toLocaleString('pt-BR'));
-  document.getElementById('drivers').innerHTML = state.drivers.map(x=>`<li>${x}</li>`).join('');
-  document.getElementById('kpis').innerHTML = state.kpis.map(k=>`<article class="kpi"><div class="label">${k.label}</div><div class="value">${k.value}</div><div class="sub">${k.sub}</div></article>`).join('');
-  lineChart('arrobaChart', state.series.arroba, 'R$'); lineChart('exportChart', state.series.exportacao, '');
-  lineChart('feedChart', state.series.feed, 'R$'); lineChart('weatherChart', state.series.weather, 'mm');
-}
-async function loadDollar(){
-  try{
-    const d=new Date(); d.setDate(d.getDate()-1);
-    const f=`${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}-${d.getFullYear()}`;
-    const url=`https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarDia(dataCotacao=@dataCotacao)?@dataCotacao='${f}'&$top=1&$format=json`;
-    const res=await fetch(url); const json=await res.json();
-    const cot=json.value?.[0]?.cotacaoVenda;
-    if(cot){ state.kpis.find(k=>k.label==='Dólar comercial').value=brl(cot); state.kpis.find(k=>k.label==='Dólar comercial').sub='PTAX venda - Banco Central'; render(); }
-  }catch(e){ state.kpis.find(k=>k.label==='Dólar comercial').value='manual'; render(); }
-}
-function lineChart(id, s, suffix){
-  const c=document.getElementById(id), ctx=c.getContext('2d'), w=c.width=c.offsetWidth*devicePixelRatio, h=c.height=220*devicePixelRatio, p=32*devicePixelRatio;
-  ctx.clearRect(0,0,w,h); ctx.lineWidth=1*devicePixelRatio; ctx.strokeStyle='#1f3b33'; ctx.fillStyle='#95aaa0'; ctx.font=`${11*devicePixelRatio}px Arial`;
-  for(let i=0;i<4;i++){const y=p+i*(h-2*p)/3; ctx.beginPath(); ctx.moveTo(p,y); ctx.lineTo(w-p,y); ctx.stroke();}
-  const min=Math.min(...s.values), max=Math.max(...s.values), span=max-min||1;
-  const pts=s.values.map((v,i)=>[p+i*(w-2*p)/(s.values.length-1), h-p-((v-min)/span)*(h-2*p)]);
-  ctx.beginPath(); pts.forEach((pt,i)=>i?ctx.lineTo(...pt):ctx.moveTo(...pt)); ctx.strokeStyle='#55d987'; ctx.lineWidth=3*devicePixelRatio; ctx.stroke();
-  pts.forEach(([x,y],i)=>{ctx.beginPath();ctx.arc(x,y,4*devicePixelRatio,0,Math.PI*2);ctx.fillStyle='#7dd3fc';ctx.fill();ctx.fillStyle='#95aaa0';ctx.fillText(s.labels[i],x-10*devicePixelRatio,h-8*devicePixelRatio)});
-  ctx.fillStyle='#eef8f3'; ctx.fillText(`${suffix} ${max}`,p,18*devicePixelRatio); ctx.fillText(`${suffix} ${min}`,p,h-p+4*devicePixelRatio);
-}
-render(); loadDollar();
-if('serviceWorker' in navigator){navigator.serviceWorker.register('/sw.js').catch(()=>{})}
+const market={score:68,drivers:[{text:"Exportações seguem firmes e sustentam o viés positivo.",tone:"positive"},{text:"Dólar favorece a competitividade da carne brasileira.",tone:"positive"},{text:"Escalas de abate em 6 dias mantêm oferta equilibrada.",tone:"positive"},{text:"Custo do milho ainda limita a margem do confinamento.",tone:"negative"}],kpis:[{label:"Arroba MS",value:"R$ 315,50",sub:"referência operacional",trend:"+1,8%",tone:"up",icon:"●"},{label:"Dólar PTAX",value:"Carregando",sub:"Banco Central do Brasil",trend:"ao vivo",tone:"stable",icon:"$"},{label:"Milho MS",value:"R$ 54,00",sub:"saca de 60 kg",trend:"-0,6%",tone:"up",icon:"◆"},{label:"Escala de abate",value:"6 dias",sub:"média regional",trend:"estável",tone:"stable",icon:"▤"},{label:"Exportações",value:"238 mil t",sub:"mês corrente",trend:"+7,2%",tone:"up",icon:"◎"},{label:"China",value:"54%",sub:"participação estimada",trend:"firme",tone:"up",icon:"◉"},{label:"Farelo de soja",value:"R$ 1.920",sub:"reais por tonelada",trend:"atenção",tone:"watch",icon:"◇"},{label:"Clima MS",value:"Favorável",sub:"sem alerta crítico",trend:"normal",tone:"stable",icon:"☀"}],signals:[{label:"Exportação",value:84,points:"+15"},{label:"China",value:72,points:"+12"},{label:"Dólar",value:66,points:"+10"},{label:"Escalas",value:58,points:"+7"},{label:"Milho",value:52,points:"−8",negative:true},{label:"Consumo",value:40,points:"−3",negative:true}],charts:{arroba:{labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"],values:[292,298,304,308,311,318,315.5],color:"#51d88a"},exportacao:{labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"],values:[182,198,211,220,232,241,238],color:"#78baf4"},custos:{labels:["Jan","Fev","Mar","Abr","Mai","Jun","Jul"],values:[100,103,105,108,112,115,111],color:"#f3ba63"}}};
+const $=id=>document.getElementById(id),brl=value=>new Intl.NumberFormat("pt-BR",{style:"currency",currency:"BRL"}).format(value);
+function render(){$("score-value").textContent=market.score;$("score-ring").style.setProperty("--score",market.score);$("drivers").innerHTML=market.drivers.map(d=>`<li class="${d.tone==='negative'?'negative':''}">${d.text}</li>`).join("");$("kpis").innerHTML=market.kpis.map(k=>`<article class="kpi"><div class="kpi-top"><span class="kpi-label">${k.label}</span><span class="kpi-icon">${k.icon}</span></div><div class="kpi-value">${k.value}</div><div class="kpi-top"><span class="kpi-sub">${k.sub}</span><span class="trend ${k.tone}">${k.trend}</span></div></article>`).join("");$("signals").innerHTML=market.signals.map(s=>`<div class="signal-row"><span>${s.label}</span><div class="signal-track"><div class="signal-fill ${s.negative?'negative':''}" style="width:${s.value}%"></div></div><strong class="${s.negative?'':'positive-text'}">${s.points}</strong></div>`).join("");const now=new Date();$("today-label").textContent=now.toLocaleDateString("pt-BR",{weekday:"short",day:"2-digit",month:"short"}).replaceAll(".","");$("sidebar-update").textContent=`Atualizado às ${now.toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit"})}`;drawAllCharts()}
+async function updateDollar(){const dollar=market.kpis.find(k=>k.label==="Dólar PTAX");try{const end=new Date(),start=new Date(end);start.setDate(start.getDate()-10);const fmt=d=>`${String(d.getMonth()+1).padStart(2,"0")}-${String(d.getDate()).padStart(2,"0")}-${d.getFullYear()}`,url=`https://olinda.bcb.gov.br/olinda/servico/PTAX/versao/v1/odata/CotacaoDolarPeriodo(dataInicial=@dataInicial,dataFinalCotacao=@dataFinalCotacao)?@dataInicial='${fmt(start)}'&@dataFinalCotacao='${fmt(end)}'&$top=100&$orderby=dataHoraCotacao%20desc&$format=json`,response=await fetch(url);if(!response.ok)throw new Error();const json=await response.json(),value=json.value?.[0]?.cotacaoVenda;if(value){dollar.value=brl(value);dollar.sub="PTAX venda • Banco Central";dollar.trend="atualizado"}}catch{dollar.value="R$ 5,40";dollar.sub="referência manual • BCB";dollar.trend="referência"}render()}
+function drawChart(canvasId,series,fill=false){const canvas=$(canvasId),rect=canvas.getBoundingClientRect(),ratio=Math.min(devicePixelRatio||1,2);canvas.width=Math.round(rect.width*ratio);canvas.height=Math.round(rect.height*ratio);const ctx=canvas.getContext("2d"),w=canvas.width,h=canvas.height,p={l:38*ratio,r:16*ratio,t:18*ratio,b:28*ratio};ctx.clearRect(0,0,w,h);const min=Math.min(...series.values),max=Math.max(...series.values),span=max-min||1;ctx.font=`${10*ratio}px DM Sans`;ctx.textAlign="center";ctx.fillStyle="#718a7e";ctx.strokeStyle="#1d382d";ctx.lineWidth=ratio;for(let i=0;i<4;i++){const y=p.t+i*(h-p.t-p.b)/3;ctx.beginPath();ctx.moveTo(p.l,y);ctx.lineTo(w-p.r,y);ctx.stroke()}const pts=series.values.map((v,i)=>({x:p.l+i*(w-p.l-p.r)/(series.values.length-1),y:h-p.b-(v-min)/span*(h-p.t-p.b)}));if(fill){const gradient=ctx.createLinearGradient(0,p.t,0,h-p.b);gradient.addColorStop(0,series.color+"35");gradient.addColorStop(1,series.color+"00");ctx.beginPath();ctx.moveTo(pts[0].x,h-p.b);pts.forEach(pt=>ctx.lineTo(pt.x,pt.y));ctx.lineTo(pts.at(-1).x,h-p.b);ctx.closePath();ctx.fillStyle=gradient;ctx.fill()}ctx.beginPath();pts.forEach((pt,i)=>i?ctx.lineTo(pt.x,pt.y):ctx.moveTo(pt.x,pt.y));ctx.strokeStyle=series.color;ctx.lineWidth=2.5*ratio;ctx.lineJoin="round";ctx.stroke();pts.forEach((pt,i)=>{ctx.beginPath();ctx.arc(pt.x,pt.y,3*ratio,0,Math.PI*2);ctx.fillStyle="#0d1b16";ctx.fill();ctx.strokeStyle=series.color;ctx.lineWidth=2*ratio;ctx.stroke();ctx.fillStyle="#718a7e";ctx.fillText(series.labels[i],pt.x,h-8*ratio)})}
+function drawAllCharts(){drawChart("arroba-chart",market.charts.arroba,true);drawChart("export-chart",market.charts.exportacao,true);drawChart("feed-chart",market.charts.custos,true)}function closeMenu(){document.querySelector(".sidebar").classList.remove("open");$("mobile-overlay").classList.remove("show");$("menu-button").setAttribute("aria-expanded","false")}
+$("menu-button").addEventListener("click",()=>{const open=document.querySelector(".sidebar").classList.toggle("open");$("mobile-overlay").classList.toggle("show",open);$("menu-button").setAttribute("aria-expanded",String(open))});$("mobile-overlay").addEventListener("click",closeMenu);document.querySelectorAll(".nav-link").forEach(link=>link.addEventListener("click",closeMenu));$("refresh-button").addEventListener("click",async e=>{e.currentTarget.disabled=true;await updateDollar();e.currentTarget.disabled=false});window.addEventListener("resize",()=>requestAnimationFrame(drawAllCharts));render();updateDollar();if("serviceWorker" in navigator)navigator.serviceWorker.register("/sw.js").catch(()=>{});
